@@ -1,287 +1,216 @@
-Silicon Velten — Clay
-Full-Trust Enterprise Agent für kontrollierte Geschäftsprozessautomatisierung
+# Silicon Velten — Clay
 
-Silicon Velten · www.silicon-velten.de · info@silicon-velten.de
+## Full-Trust Enterprise Agent
 
-    Das Sprachmodell darf planen — die Anwendung kontrolliert die Ausführung.
+> **Das Sprachmodell darf planen — die Anwendung kontrolliert die Ausführung.**
 
-Silicon Velten — Clay ist ein modularer KI-Agent für die Automatisierung komplexer Geschäftsprozesse. Er verbindet ein lokal betriebenes Sprachmodell mit einer kontrollierten Agentenarchitektur aus Planung, Kontrolle, Freigabe und auditierter Ausführung.
-🎥 Live-Demo
+**Silicon Velten — Clay** ist ein KI-Agent für die kontrollierte Automatisierung von Geschäftsprozessen.
 
-▶ Clay in Aktion auf YouTube ansehen
+Clay unterstützt bei der Planung und Bearbeitung komplexer Aufgaben und verbindet dabei **lokale KI, Automatisierung und menschliche Kontrolle**.
 
-Der vollständige Beispielworkflow:
-#	Schritt	Beschreibung
-1	Aufgabe analysieren	Auftrag erfassen und verstehen
-2	Arbeitsablauf planen	Zerlegung in prüfbare Einzelschritte
-3	Web-Recherche	Kontrollierter Zugriff auf Informationsquellen
-4	Informationen verarbeiten	Strukturierung und Aufbereitung
-5	PDF erzeugen	Dokumentgenerierung
-6	E-Mail versenden	Vorbereitung und kontrollierter Versand
-🖼️ Screenshots
+---
 
-https://assets/aufgabe.jpg
+## Was ist Clay?
 
-Aufgabenstellung im Agenten
+Clay wurde entwickelt, um wiederkehrende und komplexe Geschäftsprozesse mit KI zu unterstützen.
 
-https://assets/popup.jpg
+Dabei steht nicht maximale Autonomie im Mittelpunkt, sondern:
 
-Freigabedialog vor einer kritischen Aktion
+**Kontrolle. Transparenz. Nachvollziehbarkeit.**
 
-https://assets/excel.jpg
+Der Benutzer behält die Kontrolle über kritische Aktionen, während Clay die vorbereitenden Arbeitsschritte automatisiert.
 
-Automatisch generierter Excel-Bericht
-🎯 Motivation
+---
 
-Viele moderne KI-Assistenten werden als Cloud-Dienste betrieben. Für Unternehmen entstehen dadurch grundlegende Fragen, die vor einem produktiven Einsatz beantwortet werden müssen:
+## Was Clay kann
 
-    Wo werden Unternehmensdaten verarbeitet?
+- 🧠 Aufgaben analysieren und Arbeitsabläufe planen
+- 🌐 Informationen aus dem Web recherchieren
+- 📄 Dokumente und Berichte erstellen
+- 📊 Excel-Dateien erzeugen und verarbeiten
+- ✉️ E-Mails vorbereiten und versenden
+- 👤 Menschliche Freigaben bei kritischen Aktionen ermöglichen
+- 📋 Arbeitsabläufe und Ergebnisse nachvollziehbar protokollieren
+- 💻 lokale KI-Modelle verwenden
+- 🧩 verschiedene Werkzeuge für unterschiedliche Aufgaben einsetzen
 
-    Welche Daten verlassen die eigene Infrastruktur?
+---
 
-    Welche externen Dienste werden benötigt?
+## Beispiel
 
-    Welche laufenden API- oder Tokenkosten entstehen?
+Eine Aufgabe könnte beispielsweise lauten:
 
-    Welche Aktionen darf ein autonomer Agent tatsächlich ausführen?
+> **„Erstelle einen Bericht zu einem bestimmten Thema und sende ihn anschließend per E-Mail.“**
 
-    Wie lässt sich eine KI-Aktion nachvollziehen und belegen?
+Clay kann daraus einen vollständigen Arbeitsablauf erstellen:
 
-Silicon Velten verfolgt deshalb einen Local-First-Ansatz: Die KI-Inferenz kann auf eigener Hardware betrieben werden. Sensible Workflows und Unternehmensdaten bleiben innerhalb der eigenen Infrastruktur. Externe Dienste sind optional und explizit konfigurierbar — nicht implizit vorausgesetzt.
-🧠 Was ist Clay?
+```text
+Aufgabe
+   ↓
+Planung
+   ↓
+Recherche
+   ↓
+Datenverarbeitung
+   ↓
+Bericht erstellen
+   ↓
+E-Mail vorbereiten
+   ↓
+Freigabe
+   ↓
+Ausführung
+```
 
-Clay ist kein Chatbot. Es ist ein kontrollierter Agenten-Workflow, bestehend aus spezialisierten Komponenten mit klar getrennten Verantwortlichkeiten.
-Die fünf Ebenen
-Ebene	Verantwortung
-1. Benutzer	Aufgabe formulieren und Aktionen freigeben
-2. Planung	Zerlegung in strukturierte, prüfbare Arbeitsschritte
-3. Kontrolle	Prüfung jeder geplanten Aktion gegen explizite Regeln
-4. Freigabe	Menschliche Entscheidung bei sensiblen Aktionen
-5. Ausführung	Ausschließlich genehmigte und regelkonforme Aktionen
+Bei kritischen Aktionen bleibt der Mensch in der Entscheidungskette.
 
-Jede Ebene hat eine klar abgegrenzte Verantwortung. Es gibt keinen Pfad, über den das Sprachmodell direkt eine Aktion ausführt, ohne die Ebenen 3 und 4 zu passieren.
-🔐 Sicherheitsmodell
-„Full-Trust" bedeutet nicht blindes Vertrauen
+---
 
-Der Begriff Full-Trust Agent beschreibt in diesem Projekt ausdrücklich nicht, dass dem Sprachmodell blind vertraut wird. Er beschreibt, dass die Anwendung die Ausführung kontrolliert — unabhängig davon, was das Modell plant.
+## Human-in-the-Loop
 
-    Benutzeranfrage → Analyse (Sprachmodell) → Plan → Kontrolle → Freigabe (bei kritischen Aktionen) → Kontrollierte Ausführung → Ergebnis → Audit / Telemetry
+Ein zentraler Bestandteil von Clay ist die **menschliche Freigabe**.
 
-Das Modell ist nicht automatisch die letzte Instanz über eine Aktion.
-Grundsätze
-Prinzip	Bedeutung
-Kein implizites Vertrauen	Modell-Ausgaben werden als Daten geparst und gegen Regeln geprüft, nie direkt ausgeführt
-Default Deny	Unbekannte Aktionen werden abgelehnt, nicht ausgeführt
-Human-in-the-Loop	Sensible Aktionen erfordern explizite menschliche Freigabe
-Audit-Trail	Jede geplante, geprüfte, freigegebene oder abgelehnte Aktion wird protokolliert
-Least Privilege	Der Agent erhält nur die Werkzeuge, die er wirklich braucht
-Keine stillen Fallbacks	Fehlgeschlagene Aktionen werden berichtet, nicht improvisiert ersetzt
-Local-First	Kein externer Dienst ohne explizite Konfiguration
-Was Clay ausdrücklich nicht ist
+Der Agent kann Aufgaben vorbereiten und bearbeiten.  
+Bevor eine sensible Aktion ausgeführt wird, kann eine explizite Bestätigung erforderlich sein.
 
-    ❌ Kein Ersatz für Sicherheitskonzepte, Netzwerksegmentierung oder Berechtigungsmanagement
+So verbindet Clay **Automatisierung mit menschlicher Kontrolle**.
 
-    ❌ Keine Garantie gegen Prompt Injection — Clay reduziert die Auswirkung, beseitigt die Angriffsfläche aber nicht
+---
 
-    ❌ Keine Zertifizierung (DSGVO, ISO 27001, SOC 2 o. ä.) — Local-First unterstützt Compliance, ersetzt sie aber nicht
+## Local-First
 
-    ❌ Kein Produktionssystem „out of the box" — siehe Projektstatus
+Clay wurde mit einem **Local-First-Ansatz** entwickelt.
 
-🛡️ Human-in-the-Loop
+Die eigentliche KI-Inferenz kann auf eigener Hardware betrieben werden. Dadurch können Unternehmen ihre KI-Infrastruktur stärker selbst kontrollieren und die Abhängigkeit von externen Cloud-Diensten reduzieren.
 
-Eine der wichtigsten Funktionen von Clay ist die menschliche Kontrolle kritischer Aktionen. Der Agent kann einen vollständigen Plan erstellen. Vor freigabepflichtigen Aktionen wird der Ablauf dem Benutzer vorgelegt. Der Mensch entscheidet, ob die Aktion ausgeführt werden darf.
+Externe Dienste können abhängig vom jeweiligen Einsatz optional eingesetzt werden.
 
-Beispiel: Aufgabe „Erstelle einen Bericht und sende ihn per E-Mail."
-#	Schritt	Status
-1	Aufgabe analysieren	automatisch
-2	Recherche durchführen	automatisch
-3	Daten verarbeiten	automatisch
-4	PDF erstellen	automatisch
-5	E-Mail vorbereiten	automatisch
-6	Versand zur Freigabe vorlegen	⏸️ wartet auf Mensch
-7	Nach Freigabe versenden	nach Freigabe
-8	Vorgang protokollieren	automatisch
-🔐 Kontrollschicht
+---
 
-Clay besitzt eine eigene Kontrollschicht, die außerhalb des Sprachmodells sitzt.
+## Ein Blick auf Clay
 
-Grundidee: Nicht jede vom Sprachmodell vorgeschlagene Aktion darf automatisch ausgeführt werden. Aktionen werden nach ihrer Kritikalität unterschiedlich behandelt — von „direkt ausführbar" bis „grundsätzlich gesperrt".
+### Aufgabenstellung
 
-    Die konkrete Klassifizierung ist Teil des geschützten Kerns und wird im persönlichen Gespräch erläutert.
+![Clay Aufgabenstellung](assets/aufgabe.jpg)
 
-🧱 Sicherheitsarchitektur
+*Aufgabe und Arbeitsauftrag im Agenten*
 
-Die Architektur kombiniert mehrere Kontrollmechanismen:
-Mechanismus	Funktion
-Regelprüfung	Regeln bestimmen, welche Aktionen erlaubt, eingeschränkt oder freigabepflichtig sind
-Human-in-the-Loop	Kritische Aktionen verlangen explizite menschliche Freigabe
-Tool-Isolation	Werkzeuge werden kontrolliert ausgeführt
-Audit Logging	Aktionen und Ergebnisse werden protokolliert
-Circuit Breaker / Recovery	Fehlerhafte Abläufe werden kontrolliert beendet
-Private Netzwerk-Kommunikation	Agent und Modellserver kommunizieren über private Netzwerke
-Remote Approval	Freigaben können über eine Mobile Bridge von einem separaten Gerät erfolgen
-⚠️ Bedrohungsmodell (Auszug)
+### Freigabe
 
-Clay berücksichtigt bei der Architektur nicht nur normale Programmfehler, sondern auch mögliche Angriffs- und Manipulationsszenarien.
+![Clay Approval](assets/popup.jpg)
 
-Betrachtete Szenarien: Prompt Injection · Manipulierte Webseiten · Manipulierte Dokumente · Kompromittierte Werkzeuge · Missbrauch privilegierter Aktionen · Kompromittierter Modellserver
+*Freigabedialog für eine kritische Aktion*
 
-Gegenmaßnahmen (Auszug): Trennung von Daten und Steuerlogik · Regelprüfung außerhalb des Sprachmodells · kontrollierte Werkzeuge · Freigabe für kritische Aktionen · Tool-Isolation · vollständiges Logging.
-🧠 Architektur
+### Excel Automation
 
-Clay besteht aus mehreren spezialisierten Komponenten:
-Komponente	Aufgabe
-Zentrale Steuerung	Ablaufsteuerung, Kontextverwaltung, Fehlerbehandlung
-Planung	Zerlegt natürliche Sprache in strukturierte Arbeitsschritte
-Ausführung	Führt genehmigte Schritte kontrolliert aus
-Kontext	Persistente Speichermechanismen für kurz- und langfristigen Kontext
-Werkzeugverwaltung	Zentrale Registrierung aller verfügbaren Werkzeuge
-🛠️ Werkzeugkategorien
+![Clay Excel](assets/excel.jpg)
 
-Clay besitzt eine erweiterbare Werkzeuglandschaft. Die genaue Zusammensetzung ist konfigurations- und kundenabhängig.
-Kategorie	Beispiele
-Web-Recherche	Informationsbeschaffung, Quellenzugriff
-Dokumente	Erstellung und Verarbeitung (PDF, Excel)
-Kommunikation	E-Mail, Benachrichtigungen
-Datenzugriff	Datenbanken, Dateisystem
-Business-Automation	Wiederkehrende Workflows
-Entwicklung	Code- und Entwicklerwerkzeuge
-🌐 Local-First-Architektur
+*Automatisch erzeugter Excel-Bericht*
 
-Eine der Besonderheiten von Silicon Velten ist die Trennung zwischen Agent und Modellserver.
+---
 
-Der Agent und die eigentliche Modellinferenz können auf unterschiedlichen Systemen betrieben und über ein privates Netzwerk verbunden werden. Dadurch kann Clay die Rechenleistung eines leistungsfähigen Systems nutzen, ohne dass der Agent selbst über entsprechende GPU-Ressourcen verfügen muss.
+## Demo
 
-    Die konkrete Infrastruktur wird im persönlichen Gespräch erläutert.
+Das Repository enthält eine Beispiel-Demo von Clay.
 
-💰 Kostenkontrolle
+▶️ **[Demo-Video ansehen](assets/demo.mp4)**
 
-Ein wesentliches Ziel des Local-First-Ansatzes ist die Unabhängigkeit von nutzungsabhängigen Cloud-Tokenkosten für die eigentliche Modellinferenz.
+Der gezeigte Workflow umfasst unter anderem:
 
-Bei lokaler Inferenz entstehen keine API-Gebühren pro Token. Reale Kosten bleiben nur für Hardware, Strom, Wartung, Speicher und optionale externe Dienste.
-📊 Telemetry & ROI
+**Aufgabe → Planung → Recherche → Datenverarbeitung → Dokumenterstellung → kontrollierte Ausführung**
 
-Clay besitzt Telemetrie- und Logging-Funktionen zur Nachvollziehbarkeit von Werkzeug-Aktionen und Arbeitsabläufen. Je nach Workflow können beispielsweise erfasst werden:
+---
 
-    Aufgabe und Ausführungsstatus
+## Mögliche Einsatzbereiche
 
-    Werkzeug-Nutzung
+Clay kann unter anderem für folgende Aufgaben eingesetzt werden:
 
-    Fehler
+- Web-Recherche
+- Dokumentenanalyse
+- Berichtserstellung
+- PDF- und Excel-Erstellung
+- E-Mail-Automatisierung
+- Datenverarbeitung
+- interne Wissenssysteme
+- administrative Aufgaben
+- wiederkehrende Geschäftsprozesse
 
-    Betriebskosten
+---
 
-    geschätzte Zeitersparnis
+## Unser Ansatz
 
-Beispielrechnung:
-Aufwand	Dauer
-Manuelle Bearbeitung	45 Minuten
-Automatisierte Bearbeitung	8 Minuten
-Zeitersparnis	37 Minuten pro Vorgang
-🧠 Learning & Adaptation
+### Control over Autonomy
 
-Clay besitzt Mechanismen zur Verarbeitung vergangener Ausführungen und Fehler. Vergangene Ergebnisse können genutzt werden, um zukünftige Abläufe gezielter zu gestalten.
+Automatisierung soll nicht bedeuten, dass Kontrolle verloren geht.
 
-    Der Lernmechanismus ersetzt dabei nicht die Kontrollschicht.
+### Local First
 
-🖥️ GUI & Monitoring
+KI-Inferenz kann lokal betrieben werden, wenn dies für den jeweiligen Einsatz sinnvoll ist.
 
-Clay besitzt eine grafische Benutzeroberfläche. Die Oberfläche kann unter anderem darstellen:
+### Human in the Loop
 
-    Benutzeranfragen
+Bei kritischen Aktionen bleibt der Mensch Teil des Prozesses.
 
-    generierte Pläne
+### Observable Systems
 
-    Ausführungsstatus
+Arbeitsabläufe und Ergebnisse sollen nachvollziehbar bleiben.
 
-    Ergebnisse
+### Security by Design
 
-    Genehmigungsdialoge
+Sicherheitsanforderungen werden bereits bei der Entwicklung berücksichtigt.
 
-    Logs und Zeitverläufe
+---
 
-    Werkzeug-Aktivitäten
+## Projektstatus
 
-Der Benutzer soll dadurch jederzeit erkennen können, was Clay gerade plant bzw. ausführt.
-🎬 Demo-Workflow
+**Silicon Velten — Clay befindet sich in aktiver Entwicklung.**
 
-Das aktuelle Demo-Video zeigt einen vollständigen Beispielworkflow:
+Aktuelle Schwerpunkte sind unter anderem:
 
-    Benutzeranfrage → Planung → Web-Recherche → Datenverarbeitung → PDF-Erstellung → E-Mail → Kontrollierte Ausführung
+- Agenten- und Workflow-Automatisierung
+- lokale KI-Integration
+- Human-in-the-Loop
+- Web-Recherche
+- Dokument- und Excel-Automatisierung
+- Business Automation
+- Benutzeroberfläche und Monitoring
+- Sicherheit und Nachvollziehbarkeit
 
-▶ Demo ansehen
-🏢 Mögliche Einsatzbereiche
+Das Projekt entwickelt sich kontinuierlich weiter.
 
-    Web-Recherche
+---
 
-    Dokumentenanalyse
+## Wichtig
 
-    Berichtserstellung
+Clay ist kein Ersatz für bestehende Sicherheits-, Berechtigungs- oder Compliance-Konzepte.
 
-    PDF- und Excel-Erstellung
+Der Einsatz in produktiven Unternehmensumgebungen muss immer entsprechend der jeweiligen technischen, organisatorischen und rechtlichen Anforderungen erfolgen.
 
-    E-Mail-Automatisierung
+---
 
-    Interne Wissenssysteme
+## Lizenz
 
-    Datenverarbeitung
+**Silicon Velten / Clay ist proprietäre Software.**
 
-    Administrative Prozesse
+Der Quellcode und die zugehörigen Komponenten sind geistiges Eigentum des Projektautors.
 
-    Wiederkehrende Business-Workflows
+Eine Nutzung, Vervielfältigung, Weitergabe, Modifikation oder kommerzielle Verwendung ist ohne entsprechende Genehmigung bzw. Lizenz nicht gestattet.
 
-Fokus: Kontrollierte Automatisierung statt unkontrollierter Autonomie.
-🧪 Entwicklungsphilosophie
-Prinzip	Bedeutung
-Control over Autonomy	Kontrollierte Ausführung ist wichtiger als maximale Autonomie
-Local First	Lokale KI-Inferenz, wann immer technisch sinnvoll
-Human in the Loop	Menschen bleiben bei kritischen Aktionen in der Entscheidungskette
-Observable Systems	Aktionen und Ergebnisse sind nachvollziehbar
-Modular Architecture	Neue Komponenten integrierbar ohne Neuentwicklung
-Security by Design	Sicherheit ist Bestandteil der Architektur
-🏗️ Projektstatus
+---
 
-Silicon Velten / Clay befindet sich in aktiver Entwicklung.
+## Kontakt
 
-Aktuelle Schwerpunkte:
+### Silicon Velten
 
-    Agenten-Architektur
+🌐 **https://www.silicon-velten.de**  
+✉️ **info@silicon-velten.de**
 
-    Planung und Steuerung
+Für Informationen zu **Clay, Lizenzierung, Integration oder individuellen Anwendungsfällen** kontaktieren Sie uns gerne direkt.
 
-    Werkzeug-Ökosystem
+---
 
-    Human-in-the-Loop
+## Silicon Velten
 
-    Kontrollschicht
+**Clay — Full-Trust Enterprise Agent**
 
-    Kontext & Speicher
-
-    Telemetrie
-
-    Lokale Modell-Integration
-
-    Web-Recherche
-
-    Business-Automation
-
-    Sicherheit
-
-⭐ Project Highlights
-
-✓ Local LLM · ✓ Agent Architecture · ✓ Planner & Steuerung · ✓ Werkzeug-Registry · ✓ Kontext & Speicher · ✓ Kontrollschicht · ✓ Human-in-the-Loop · ✓ Approval Workflow · ✓ Remote Approval · ✓ Web Research · ✓ PDF Generation · ✓ Excel Automation · ✓ E-Mail Automation · ✓ Telemetry · ✓ ROI Tracking · ✓ GUI · ✓ Modular Architecture · ✓ Security by Design
-📜 Lizenz
-
-Silicon Velten / Clay ist proprietäre Software.
-
-Der Quellcode, die Architektur und die zugehörigen Komponenten sind geistiges Eigentum des Projektautors. Eine Nutzung, Vervielfältigung, Weitergabe, Modifikation oder kommerzielle Verwendung ist ohne entsprechende Genehmigung bzw. Lizenz nicht gestattet.
-📬 Kontakt
-
-Silicon Velten
-🌐 www.silicon-velten.de
-✉️ info@silicon-velten.de
-
-Für Anfragen zu Lizenzierung, Integration oder individuellen Workflows kontaktieren Sie uns gerne direkt.
-
-Silicon Velten — Full-Trust Enterprise Agent „Clay"
-Developed in Germany.
+*Controlled Automation · Local AI · Human Oversight*
