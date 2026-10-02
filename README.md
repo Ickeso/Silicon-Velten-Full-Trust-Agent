@@ -1,850 +1,274 @@
-# 🛡️ Silicon Velten – Full-Trust Enterprise Agent „Clay“
+Silicon Velten — Clay
 
-### Local-First AI Agent for Controlled Business Automation
+Local-First KI-Agent für kontrollierte Geschäftsprozessautomatisierung
 
-**Silicon Velten – Clay** ist ein modularer KI-Agent für die Automatisierung komplexer Geschäftsprozesse.
+https://img.shields.io/badge/status-alpha-orange
+https://img.shields.io/badge/lizenz-siehe%20LICENSE-blue
+https://img.shields.io/badge/architektur-local--first-green
+https://img.shields.io/badge/ausf%C3%BChrung-human--in--the--loop-yellow
 
-Clay verbindet ein lokal betriebenes Large Language Model (LLM) mit einer kontrollierten Agentenarchitektur aus **Planning, Memory, Tool Execution, Policy Enforcement, Approval Workflows, Human-in-the-Loop, Audit Logging und Remote Approval**.
+Clay ist ein modularer KI-Agent, der komplexe Geschäftsprozesse in klar definierte, prüfbare und freigabepflichtige Schritte zerlegt. Der zentrale Architekturgedanke:
 
-Der zentrale Architekturgedanke lautet:
+Das Sprachmodell darf planen — die Anwendung kontrolliert die Ausführung.
 
-> **Das LLM darf planen – die Anwendung kontrolliert die Ausführung.**
+🎥 Live-Demo
 
-Clay wurde mit dem Ziel entwickelt, die Möglichkeiten moderner KI-Agenten mit **Kontrolle, Nachvollziehbarkeit, lokaler Verarbeitung und kontrollierter Tool-Ausführung** zu verbinden.
+▶️ Clay in Aktion: https://www.youtube.com/watch?v=XXVy7oCdnh0
 
----
+Gezeigt wird ein vollständiger Beispielworkflow:
 
-# 🎥 Live Demo
+Aufgabe analysieren
 
-## ▶️ Clay in Aktion
+Arbeitsablauf planen
 
-[![Clay – Live Demo auf YouTube](popup.jpg)](https://www.youtube.com/watch?v=XXVy7oCdnh0)
+Web-Recherche durchführen
 
-**Zum vollständigen Demo-Video auf YouTube klicken.**
+Informationen verarbeiten
 
-Im Video wird unter anderem gezeigt, wie Clay:
+PDF erzeugen
 
-* eine Aufgabe analysiert
-* einen Arbeitsablauf plant
-* eine Web-Recherche durchführt
-* Informationen verarbeitet
-* ein PDF erzeugt
-* eine E-Mail vorbereitet bzw. versendet
-* Werkzeuge kontrolliert ausführt
+E-Mail vorbereiten und kontrolliert versenden
 
-**YouTube:**
-https://www.youtube.com/watch?v=XXVy7oCdnh0
+🎯 Motivation
 
----
+Viele KI-Assistenten werden als Cloud-Dienste betrieben. Für Unternehmen entstehen dadurch grundlegende Fragen, die vor einem produktiven Einsatz beantwortet werden müssen:
 
-# 🎯 Motivation
+Wo werden Unternehmensdaten verarbeitet?
 
-Viele moderne KI-Assistenten werden als Cloud-Dienste betrieben. Unternehmen müssen dadurch unter anderem folgende Fragen berücksichtigen:
+Welche Daten verlassen die eigene Infrastruktur?
 
-* Wo werden Unternehmensdaten verarbeitet?
-* Welche Daten verlassen die eigene Infrastruktur?
-* Welche externen Dienste werden benötigt?
-* Welche laufenden API- oder Tokenkosten entstehen?
-* Welche Aktionen darf ein autonomer Agent tatsächlich ausführen?
-* Wie lässt sich eine KI-Aktion nachvollziehen?
-* Was passiert bei Fehlern oder manipulierten Eingaben?
+Welche externen Dienste werden benötigt?
 
-Silicon Velten verfolgt deshalb einen **Local-First-Ansatz**.
+Welche laufenden API- oder Tokenkosten entstehen?
 
-Die eigentliche KI-Inferenz kann auf eigener Hardware betrieben werden. Dadurch können sensible Arbeitsabläufe und Unternehmensdaten innerhalb der eigenen Infrastruktur verarbeitet werden, ohne dass für die eigentliche LLM-Inferenz zwingend ein externer KI-Cloud-Dienst erforderlich ist.
+Welche Aktionen darf ein autonomer Agent tatsächlich ausführen?
 
-Externe Dienste können optional eingebunden werden, beispielsweise für bestimmte Web-Recherche-Funktionen.
+Wie lässt sich eine KI-Aktion nachvollziehen und belegen?
 
----
+Silicon Velten verfolgt deshalb einen Local-First-Ansatz: Die KI-Inferenz kann auf eigener Hardware betrieben werden. Sensible Workflows und Unternehmensdaten können innerhalb der eigenen Infrastruktur verarbeitet werden. Externe Dienste sind optional und explizit konfigurierbar — nicht implizit vorausgesetzt.
+🧠 Was ist Clay?
 
-# 🧠 Was ist Clay?
+Clay ist kein Chatbot. Es ist ein kontrollierter Agenten-Workflow, bestehend aus mehreren spezialisierten Komponenten.
 
-Clay ist **kein einfacher Chatbot**.
+Die fünf Ebenen:
+Ebene Verantwortung
 
-Das System besteht aus mehreren spezialisierten Komponenten, die gemeinsam einen kontrollierten Agenten-Workflow bilden.
+    Benutzer Aufgabe formulieren, Aktionen freigeben
 
-```text
-                         Benutzer
-                            │
-                            ▼
-                   ┌────────────────┐
-                   │    PySide6     │
-                   │      GUI       │
-                   └───────┬────────┘
-                           │
-                           ▼
-                 ┌────────────────────┐
-                 │ Approval / HITL    │
-                 │ Human-in-the-Loop  │
-                 └─────────┬──────────┘
-                           │
-                           ▼
-                   ┌──────────────┐
-                   │  SmartCore   │
-                   └──────┬───────┘
-                          │
-              ┌───────────┼───────────┐
-              ▼           ▼           ▼
-           Planner      Memory      Policy
-              │           │           │
-              └───────────┼───────────┘
-                          ▼
-                   ┌──────────────┐
-                   │   Executor   │
-                   └──────┬───────┘
-                          │
-                   ┌──────▼───────┐
-                   │ Tool Registry│
-                   └──────┬───────┘
-                          │
-            ┌─────────────┼─────────────┐
-            ▼             ▼             ▼
-           Web           PDF           E-Mail
-            │             │             │
-            └─────────────┼─────────────┘
-                          ▼
-                  Audit / Telemetry
-```
+    Planung Zerlegung in strukturierte, überprüfbare Arbeitsschritte
 
----
+    Kontrolle Prüfung jeder geplanten Aktion gegen explizite Regeln
 
-# 🔐 Full-Trust bedeutet nicht blindes Vertrauen
+    Freigabe Menschliche Entscheidung bei sensiblen Aktionen
 
-Der Begriff **Full-Trust Agent** bedeutet ausdrücklich nicht, dass dem Sprachmodell blind vertraut wird.
+    Ausführung Ausschließlich genehmigte und regelkonforme Aktionen
 
-Im Gegenteil:
+Jede Ebene hat eine klar abgegrenzte Verantwortung. Es gibt keinen Pfad, über den das Sprachmodell direkt eine Aktion ausführt, ohne die Ebenen 3 und 4 zu passieren.
+🔐 Sicherheitsmodell
+„Full-Trust" bedeutet nicht blindes Vertrauen
 
-Clay trennt die **Intelligenz des LLM** von der **kontrollierten Ausführung durch die Anwendung**.
+Der Begriff Full-Trust Agent beschreibt in diesem Projekt nicht, dass dem Sprachmodell vertraut wird. Er beschreibt, dass die Anwendung die Ausführung kontrolliert — unabhängig davon, was das Modell plant.
 
 Vereinfacht:
+text
 
-```text
-Benutzeranfrage
-       ↓
-LLM / Analyse
-       ↓
-Plan
-       ↓
-Policy Evaluation
-       ↓
-Approval / Human Review
-       ↓
-kontrollierte Ausführung
-       ↓
-Tool
-       ↓
-Ergebnis
-       ↓
-Audit / Telemetry
-```
+LLM-Output → Strukturierter Plan → Regelprüfung → Freigabe → Ausführung
+(nicht vertrauenswürdig) (vertrauenswürdig)
 
-Das Modell ist somit nicht automatisch die letzte Instanz über eine Aktion.
+Grundsätze
 
----
+Kein implizites Vertrauen in Modell-Ausgaben. Jede geplante Aktion wird als Datenstruktur geparst und gegen Regeln geprüft.
 
-# 🛡️ Human-in-the-Loop
+Default Deny. Aktionen, die keiner explizit erlaubten Klasse zugeordnet werden können, werden abgelehnt — nicht ausgeführt.
 
-Eine der wichtigsten Funktionen von Clay ist die menschliche Kontrolle kritischer Aktionen.
+Human-in-the-Loop für sensible Aktionen. Versand von E-Mails, Schreiben von Dateien, externe API-Aufrufe, Netzwerkzugriffe mit Nebenwirkungen und alles, was die Systemgrenzen verlässt, erfordern eine explizite Freigabe.
 
-Der Agent kann zunächst einen vollständigen Plan erstellen.
+Audit-Trail. Jede geplante, geprüfte, freigegebene oder abgelehnte Aktion wird protokolliert.
 
-Vor einer freigabepflichtigen Aktion kann der Benutzer den Ablauf prüfen und entscheiden, ob die Aktion ausgeführt werden darf.
+Least Privilege. Der Agent erhält nur die Werkzeuge, die für den konfigurierten Workflow notwendig sind.
 
-Beispielsweise:
+Keine stillen Fallbacks. Kann eine Aktion nicht ausgeführt werden, wird dies berichtet — nicht durch eine improvisierte Alternative ersetzt.
 
-```text
-Aufgabe:
-"Erstelle einen Bericht und sende ihn per E-Mail."
+Local-First. Standardmäßig wird kein externer Dienst kontaktiert. Externe Endpunkte müssen explizit konfiguriert werden.
 
-Clay:
+Was Clay ausdrücklich nicht ist
 
-1. Aufgabe analysieren
-2. Recherche durchführen
-3. Daten verarbeiten
-4. PDF erstellen
-5. E-Mail vorbereiten
-6. Versand zur Freigabe vorlegen
-7. Nach Freigabe versenden
-8. Vorgang protokollieren
-```
+Kein Ersatz für Sicherheitskonzepte, Netzwerksegmentierung oder Berechtigungsmanagement.
 
-Dadurch bleibt der Mensch bei kritischen Aktionen in der Entscheidungskette.
+Keine Garantie gegen Prompt Injection. Clay reduziert die Auswirkung, indem das Modell keine Ausführungsrechte besitzt — beseitigt die Angriffsfläche aber nicht.
 
----
+Keine Zertifizierung (DSGVO, ISO 27001, SOC 2 o. ä.). Die Local-First-Architektur unterstützt Compliance, ersetzt sie aber nicht.
 
-# 🔐 Policy Engine
+Kein Produktionssystem „out of the box". Siehe Projektstatus.
 
-Clay besitzt eine eigene Policy- und Kontrollschicht.
+🏗️ Architektur (Überblick)
+text
 
-Die Grundidee:
-
-> **Nicht jede vom LLM vorgeschlagene Aktion darf automatisch ausgeführt werden.**
-
-Aktionen können anhand ihrer Kritikalität unterschiedlich behandelt werden.
-
-Beispiel:
-
-```text
-READ_FILE        → SAFE
-WRITE_FILE       → SENSITIVE
-SEND_EMAIL       → APPROVAL
-DELETE_FILE      → CRITICAL
-SHELL_EXECUTION  → RESTRICTED
-```
-
-Die Policy Engine befindet sich damit außerhalb des Sprachmodells.
-
----
-
-# 🧱 Sicherheitsarchitektur
-
-Die Architektur kombiniert mehrere Kontrollmechanismen:
-
-### Policy Enforcement
-
-Regeln bestimmen, welche Aktionen erlaubt, eingeschränkt oder freigabepflichtig sind.
-
-### Human-in-the-Loop
-
-Kritische Aktionen können eine explizite menschliche Freigabe verlangen.
-
-### Tool Isolation
-
-Werkzeuge können getrennt bzw. kontrolliert ausgeführt werden.
-
-### Audit Logging
-
-Aktionen und Ergebnisse werden protokolliert.
-
-### Circuit Breaker / Recovery
-
-Fehlerhafte oder unerwartete Abläufe können kontrolliert beendet bzw. in Recovery-Prozesse überführt werden.
-
-### Private Network Communication
-
-Agent und Modellserver können über ein privates Netzwerk miteinander kommunizieren.
-
-### Remote Approval
-
-Freigaben können über die Mobile Bridge auch von einem separaten Gerät aus erfolgen.
-
----
-
-# ⚠️ Threat Model
-
-Clay berücksichtigt bei der Architektur nicht nur normale Programmfehler, sondern auch mögliche Angriffs- und Manipulationsszenarien.
-
-## Prompt Injection
-
-Externe Inhalte könnten versuchen, die Instruktionen des Agenten zu verändern.
-
-Mögliche Gegenmaßnahmen:
-
-* Trennung von Daten und Steuerlogik
-* Policy Enforcement außerhalb des LLM
-* kontrollierte Tools
-* Approval für kritische Aktionen
-
-## Manipulierte Webseiten
-
-Webseiten können absichtlich oder unabsichtlich schädliche bzw. irreführende Instruktionen enthalten.
-
-Mögliche Gegenmaßnahmen:
-
-* Zugriff über definierte Tools
-* kontrollierte Verarbeitung
-* keine automatische Vertrauensannahme gegenüber Webseiteninhalten
-
-## Manipulierte Dokumente
-
-PDFs, Dateien und andere Datenquellen können manipulierte Inhalte enthalten.
-
-Mögliche Gegenmaßnahmen:
-
-* kontrollierte Verarbeitung
-* Tool-Isolation
-* Validierung
-* Logging
-
-## Kompromittierte Tools
-
-Ein Tool kann fehlerhaft oder unerwartet reagieren.
-
-Mögliche Gegenmaßnahmen:
-
-* Tool Registry
-* kontrollierte Ausführung
-* Prozessisolation
-* Policies
-* Audit Logging
-
-## Missbrauch privilegierter Aktionen
-
-Besonders kritische Systemaktionen sollen nicht ausschließlich vom LLM entschieden werden.
-
-Mögliche Gegenmaßnahmen:
-
-* abgestufte Berechtigungen
-* Approval Workflow
-* Human-in-the-Loop
-* Circuit Breaker
-* Audit Trail
-
-## Kompromittierter Modellserver
-
-Die Architektur trennt das Sprachmodell von der eigentlichen Ausführungslogik.
-
-Das Modell besitzt dadurch nicht automatisch sämtliche Systemrechte des Agenten.
-
----
-
-# 🧠 Agent Architecture
-
-## SmartCore
-
-SmartCore bildet das zentrale Steuerungssystem von Clay.
-
-Unter anderem verantwortlich für:
-
-* Ablaufsteuerung
-* Kontextverwaltung
-* Tool-Auswahl
-* Policy Integration
-* Fehlerbehandlung
-* Kommunikation zwischen Komponenten
-
----
-
-## Planner
-
-Der Planner zerlegt natürliche Sprache in strukturierte Arbeitsschritte.
-
-Beispiel:
-
-```text
-Aufgabe
-   ↓
-Analyse
-   ↓
-Plan
-   ├── Recherche
-   ├── Datenverarbeitung
-   ├── Dokumenterstellung
-   └── Kommunikation
-```
-
----
-
-## Executor
-
-Der Executor ist für die kontrollierte Durchführung genehmigter Arbeitsschritte verantwortlich.
-
-Er verbindet den vom Planner erzeugten Ablauf mit den eigentlichen Tools.
-
----
-
-## Memory
-
-Clay verfügt über persistente Speicher- und Kontextmechanismen.
-
-Dazu gehören unter anderem:
-
-* kurzfristiger Kontext
-* langfristige Informationen
-* vergangene Ausführungen
-* Reflexionen
-* Regeln
-* Ergebnisse
-
----
-
-## Tool Registry
-
-Die Tool Registry verwaltet verfügbare Werkzeuge zentral.
-
-Dadurch können zusätzliche Tools integriert werden, ohne die komplette Kernarchitektur verändern zu müssen.
-
----
-
-# 🛠️ Tool Ecosystem
-
-Clay besitzt eine erweiterbare Tool-Landschaft.
-
-## Web & Research
-
-* Web Search
-* DuckDuckGo
-* Tavily
-* Playwright
-* Universal Fetcher
-* Recherche- und Informationswerkzeuge
-
-## Dokumente
-
-* PDF-Erstellung
-* Excel-Berichte
-* Rechnungen
-* Dokumentenverarbeitung
-
-## Kommunikation
-
-* E-Mail
-* Benachrichtigungen
-* Audit Trail
-
-## Datenzugriff
-
-* SQL-Datenbanken
-* Dateisystem
-* Datenverarbeitung
-
-## Business Automation
-
-* HR-bezogene Funktionen
-* Logistik
-* Finanzinformationen
-* externe Informationsdienste
-
-## Development
-
-* Code Tool
-* Dependency Checks
-* kontrollierte Shell-Ausführung
-
----
-
-# 🌐 Local LLM Architecture
-
-Eine der Besonderheiten von Silicon Velten ist die Trennung zwischen **Agent und Modellserver**.
-
-Der Agent kann auf einem Linux-System betrieben werden, während die eigentliche LLM-Inferenz auf einem leistungsfähigen Windows-Rechner erfolgt.
-
-Beispiel:
-
-```text
-┌──────────────────────┐
-│      Kali Linux      │
-│                      │
-│  Clay Agent          │
-│  SmartCore           │
-│  Planner             │
-│  Executor            │
-│  Policy              │
-│  Approval            │
-│  GUI                 │
-└──────────┬───────────┘
-           │
-           │ Private Network
-           │ Tailscale
-           ▼
-┌──────────────────────┐
-│   Windows Machine    │
-│                      │
-│      LM Studio       │
-│          │           │
-│          ▼           │
-│     Local LLM        │
-└──────────────────────┘
-```
-
-Dadurch kann Clay die Rechenleistung eines leistungsfähigen Systems nutzen, ohne dass der Agent selbst über entsprechende GPU-Ressourcen verfügen muss.
-
----
-
-# 🤖 Lokales 14B-LLM
-
-Clay wurde für lokale Sprachmodelle entwickelt und kann beispielsweise mit einem **14B-Modell** betrieben werden.
-
-Die Modellinferenz erfolgt dabei über **LM Studio**.
-
-Der Agent selbst arbeitet über die bereitgestellte API mit dem Modellserver.
-
-Dadurch entsteht eine klare Trennung zwischen:
-
-```text
-Agent Software
-      │
-      ▼
-LLM API
-      │
-      ▼
-Lokales Sprachmodell
-```
-
----
-
-# 💰 Local Inference & Kostenkontrolle
-
-Ein wesentliches Ziel des Local-First-Ansatzes ist die Unabhängigkeit von nutzungsabhängigen Cloud-Tokenkosten für die eigentliche LLM-Inferenz.
-
-Bei lokaler Inferenz entstehen keine API-Gebühren pro Token.
-
-Natürlich entstehen weiterhin reale Kosten für:
-
-* Hardware
-* Strom
-* Wartung
-* Speicher
-* Netzwerk
-* optionale externe Dienste
-
-Der Vorteil liegt damit insbesondere in **Kostenkontrolle, Unabhängigkeit und Datenhoheit**.
-
----
-
-# 📊 Telemetry & ROI
-
-Clay besitzt Telemetrie- und Logging-Funktionen zur Nachvollziehbarkeit von Tool-Aktionen und Arbeitsabläufen.
-
-Je nach Workflow können beispielsweise erfasst werden:
-
-```text
-Task
-Zeitaufwand Mensch
-automatisierter Aufwand
-Ausführungsstatus
-Tool-Nutzung
-Fehler
-Betriebskosten
-geschätzte Zeitersparnis
-```
-
-Der ROI-Ansatz soll sichtbar machen, welchen wirtschaftlichen Nutzen automatisierte Prozesse haben können.
-
-Beispiel:
-
-```text
-Manuelle Bearbeitung:       45 Minuten
-Automatisierte Bearbeitung:  8 Minuten
-
-Zeitersparnis:              37 Minuten
-```
-
----
-
-# 🧠 Learning & Adaptation
-
-Clay besitzt Mechanismen zur Verarbeitung vergangener Ausführungen und Fehler.
-
-Vergangene Ergebnisse können genutzt werden, um zukünftige Abläufe gezielter zu gestalten.
-
-Beispielsweise können berücksichtigt werden:
-
-* vergangene Fehler
-* erfolgreiche Strategien
-* Tool-Ergebnisse
-* Ausführungsverläufe
-* Regeln
-* Reflexionen
-
-Der Lernmechanismus ersetzt dabei nicht die Policy- und Kontrollschicht.
-
----
-
-# 🖥️ GUI & Monitoring
-
-Clay besitzt eine **PySide6-basierte grafische Benutzeroberfläche**.
-
-Die Oberfläche kann unter anderem darstellen:
-
-* Benutzeranfragen
-* generierte Pläne
-* Ausführungsstatus
-* Ergebnisse
-* Genehmigungsdialoge
-* Logs
-* Timeline
-* Tool-Aktivitäten
-
-Der Benutzer soll dadurch jederzeit erkennen können, was Clay gerade plant bzw. ausführt.
-
----
-
-# 🎬 Demo Workflow
-
-Das aktuelle Demo-Video zeigt einen vollständigen Beispielworkflow:
-
-```text
-Benutzeranfrage
-      ↓
-Planung
-      ↓
-Web-Recherche
-      ↓
-Datenverarbeitung
-      ↓
-PDF-Erstellung
-      ↓
-E-Mail
-      ↓
-Kontrollierte Ausführung
-```
-
-### ▶️ Demo ansehen
-
-**YouTube:**
-https://www.youtube.com/watch?v=XXVy7oCdnh0
-
-[![Clay Demo](aufgabe.jpg)](https://www.youtube.com/watch?v=XXVy7oCdnh0)
-
----
-
-# 🖼️ Screenshots
-
-## Aufgabenstellung
-
-![Clay Aufgabenstellung](aufgabe.jpg)
-
-## Generierter Excel-Bericht
-
-![Clay Excel](excel.jpg)
-
-## Human-in-the-Loop – Approval
-
-![Clay Approval](popup.jpg)
-
----
-
-# 📁 Projektstruktur
-
-```text
-Silicon-Velten-Full-Trust-Agent/
+┌─────────────────────────────────────────────────────────┐
+│ Benutzer │
+│ Aufgabe · Freigabe · Audit-Einsicht │
+└──────────────────────────┬──────────────────────────────┘
 │
-├── agent/
-│   ├── core/
-│   │   ├── SmartCore
-│   │   ├── Planner
-│   │   ├── Events
-│   │   └── Types
-│   │
-│   ├── executor/
-│   │   ├── Runner
-│   │   ├── Sandbox
-│   │   ├── Tool Gateway
-│   │   └── Recovery
-│   │
-│   ├── tools/
-│   │   └── Business & System Tools
-│   │
-│   ├── approval/
-│   │   ├── Human-in-the-Loop
-│   │   └── Mobile Bridge
-│   │
-│   ├── models/
-│   │   ├── LM Studio Integration
-│   │   └── Prompt Strategy
-│   │
-│   ├── memory/
-│   │   ├── Core Memory
-│   │   ├── Reflection
-│   │   └── Rules
-│   │
-│   ├── registry/
-│   │   └── Tool Registry
-│   │
-│   └── gui/
-│       └── PySide6 Interface
-│
-├── assets/
-├── logs/
-├── output/
-├── requirements.txt
-├── README.md
-├── aufgabe.jpg
-├── excel.jpg
-├── popup.jpg
-└── demo.mp4
-```
+┌──────────────────────────▼──────────────────────────────┐
+│ Planung │
+│ LLM-gestützte Zerlegung in Schritte │
+│ (nicht vertrauenswürdig) │
+└──────────────────────────┬──────────────────────────────┘
+│ strukturierter Plan
+┌──────────────────────────▼──────────────────────────────┐
+│ Kontrolle │
+│ Regelprüfung · Policy-Engine · Default Deny │
+└──────────────────────────┬──────────────────────────────┘
+│ geprüfte Aktionen
+┌──────────────────────────▼──────────────────────────────┐
+│ Freigabe │
+│ Human-in-the-Loop für sensible Operationen │
+└──────────────────────────┬──────────────────────────────┘
+│ genehmigte Aktionen
+┌──────────────────────────▼──────────────────────────────┐
+│ Ausführung │
+│ Werkzeuge · Sandbox · Audit-Log · Abbruch │
+└─────────────────────────────────────────────────────────┘
 
----
+⚙️ Voraussetzungen
 
-# 📚 Technical Documentation
+Lokal betriebenes Sprachmodell (z. B. über Ollama, llama.cpp oder einen kompatiblen OpenAI-kompatiblen Endpoint)
 
-Das Projekt soll langfristig in mehrere technische Dokumentationsbereiche aufgeteilt werden:
+Python 3.10+ (bzw. die vom Setup-Skript geforderte Version)
 
-```text
-docs/
-│
-├── ARCHITECTURE.md
-├── SECURITY.md
-├── THREAT_MODEL.md
-├── DEMO.md
-└── DESIGN_DECISIONS.md
-```
+Ausreichend RAM/VRAM für das gewählte Modell
 
-## ARCHITECTURE.md
+Optional: SMTP-Zugang für E-Mail-Versand, ausgehender Netzwerkzugang für Web-Recherche
 
-Beschreibung der Komponenten, Abhängigkeiten und Datenflüsse.
+Hinweis: Externe Abhängigkeiten sind optional und werden nur aktiviert, wenn der jeweilige Workflow sie explizit benötigt.
 
-## SECURITY.md
+🚀 Installation
+bash
+Repository klonen
 
-Dokumentation der Sicherheitsprinzipien, Policies, Berechtigungen und Kontrollmechanismen.
+git clone <repo-url>
+cd silicon-velten-clay
+Virtuelle Umgebung anlegen
 
-## THREAT_MODEL.md
+python -m venv .venv
+source .venv/bin/activate # Windows: .venv\Scripts\activate
+Abhängigkeiten installieren
 
-Beschreibung relevanter Angriffs- und Fehlerszenarien.
+pip install -r requirements.txt
+Konfiguration anlegen (Beispiel siehe unten)
 
-## DEMO.md
+cp config.example.yaml config.yaml
 
-Reproduzierbare Beschreibung der Demo-Workflows.
+Beispielkonfiguration (config.yaml)
+yaml
 
-## DESIGN_DECISIONS.md
+llm:
+provider: ollama
+endpoint: http://127.0.0.1:11434
+model: llama3.1:8b
 
-Dokumentation wichtiger Architekturentscheidungen und ihrer technischen Begründung.
+policy:
+default: deny
+allowed_tools:
 
----
+    web_search
 
-# 🔒 Datenschutz & Datenhoheit
+    pdf_generate
 
-Silicon Velten verfolgt einen **Local-First-Ansatz**.
+    email_prepare
+    require_approval:
 
-Die Architektur ist darauf ausgelegt, die eigentliche KI-Inferenz und die Verarbeitung geschäftlicher Daten innerhalb der eigenen Infrastruktur durchführen zu können.
+    email_send
 
-Werden externe Dienste eingebunden, beispielsweise für Web-Recherche, hängt der tatsächliche Datenfluss von der jeweiligen Konfiguration und dem verwendeten Dienst ab.
+    file_write
 
-Deshalb gilt:
+audit:
+path: ./audit/log.jsonl
+level: info
 
-> **Local-First ist ein technisches Architekturprinzip und keine automatische rechtliche Garantie.**
+▶️ Nutzung
+bash
+Agent starten
 
-Die konkrete datenschutzrechtliche Bewertung hängt immer vom jeweiligen Einsatzszenario, den eingesetzten Diensten und der Konfiguration des Systems ab.
+python -m clay run --config config.yaml --task "Recherchiere X und erstelle ein PDF"
+Audit-Log ansehen
 
----
+python -m clay audit --tail 50
 
-# 🏢 Mögliche Einsatzbereiche
+Der Agent führt den Workflow schrittweise aus. Aktionen, die in require_approval gelistet sind, werden angehalten und zur Freigabe vorgelegt.
+🧪 Projektstatus
 
-Die Architektur kann grundsätzlich für zahlreiche Unternehmensprozesse eingesetzt werden.
+Alpha. Der Fokus liegt auf der Architektur und dem Sicherheitsmodell, nicht auf Feature-Vollständigkeit.
 
-Beispiele:
+Aktuell stabil:
 
-* Web-Recherche
-* Dokumentenanalyse
-* Berichtserstellung
-* PDF-Erstellung
-* Excel-Verarbeitung
-* E-Mail-Automatisierung
-* interne Wissenssysteme
-* Datenverarbeitung
-* administrative Prozesse
-* wiederkehrende Business-Workflows
+Grundlegende Planung und Werkzeugausführung
 
-Der Fokus liegt dabei auf:
+Policy-Prüfung mit Default Deny
 
-> **kontrollierter Automatisierung statt unkontrollierter Autonomie.**
+Freigabeschritt für sensible Aktionen
 
----
+Audit-Logging
 
-# 🧪 Entwicklungsphilosophie
+In Arbeit:
 
-### Control over Autonomy
+Erweiterte Policy-Sprache
 
-Kontrollierte Ausführung ist wichtiger als maximale Autonomie.
+Sandboxing der Werkzeuge
 
-### Local First
+Rollen- und Rechteverwaltung
 
-Lokale KI-Inferenz, wann immer technisch sinnvoll.
+Persistente Workflow-Zustände
 
-### Human in the Loop
+Nicht empfohlen für:
 
-Menschen bleiben bei kritischen Aktionen in der Entscheidungskette.
+Unbeaufsichtigten Produktivbetrieb
 
-### Observable Systems
+Verarbeitung besonders sensibler Daten ohne eigene zusätzliche Absicherung
 
-Aktionen und Ergebnisse sollen nachvollziehbar sein.
+Szenarien, in denen eine fehlerhafte Aktion nicht rückgängig gemacht werden kann
 
-### Modular Architecture
+🗺️ Roadmap (Auszug)
 
-Neue Komponenten und Tools sollen integriert werden können, ohne das gesamte System neu entwickeln zu müssen.
+□
 
-### Security by Design
+Policy-Engine mit deklarativer Regelsprache
+□
 
-Sicherheitsmechanismen sollen Bestandteil der Architektur sein und nicht nur nachträglich hinzugefügt werden.
+Werkzeug-Isolation (Subprozess-Sandbox)
+□
 
----
+Signierte Audit-Logs
+□
 
-# 🏗️ Projektstatus
+Rollenbasierte Freigabe (Vier-Augen-Prinzip)
+□
 
-**Silicon Velten / Clay befindet sich in aktiver Entwicklung.**
+Referenz-Workflows als Vorlagen
+□
 
-Das Projekt wird kontinuierlich erweitert und verbessert.
+Optionale Integration externer LLM-Endpoints mit explizitem Opt-in
 
-Aktuelle Schwerpunkte:
+🤝 Beitragen
 
-* Agent Architecture
-* Planner
-* SmartCore
-* Executor
-* Tool Ecosystem
-* Human-in-the-Loop
-* Policy Engine
-* Memory
-* Telemetry
-* Local LLM Integration
-* Web Research
-* Business Automation
-* Security
+Beiträge sind willkommen. Bitte beachten:
 
----
+Sicherheitsrelevante Änderungen zuerst als Issue diskutieren.
 
-# 📜 License
+Keine PRs, die implizites Vertrauen in Modell-Ausgaben einführen.
 
-**Silicon Velten / Clay ist proprietäre Software.**
+Jede neue Werkzeugklasse braucht eine klare Policy-Zuordnung.
 
-Der Quellcode, die Architektur und die zugehörigen Komponenten sind geistiges Eigentum des Projektautors.
+Tests für Kontroll- und Freigabelogik sind Pflicht.
 
-Eine Nutzung, Vervielfältigung, Weitergabe, Modifikation oder kommerzielle Verwendung ist ohne entsprechende Genehmigung bzw. Lizenz nicht gestattet.
+📄 Lizenz
 
----
+Siehe LICENSE.
+⚠️ Haftungsausschluss
 
-# 👨‍💻 Project
+Clay ist ein Werkzeug. Die Verantwortung für die Verarbeitung von Unternehmensdaten, die Einhaltung regulatorischer Anforderungen und die Absicherung der Laufzeitumgebung liegt beim Betreiber. Die in dieser README gemachten Aussagen beschreiben beabsichtigtes Verhalten, keine Garantien.
+📬 Kontakt
 
-**Silicon Velten – Full-Trust Enterprise Agent „Clay“**
-
-Developed in Germany.
-
-### Built around one principle:
-
-> **AI should be powerful enough to help — and controlled enough to trust.**
-
----
-
-## 🎥 Demo
-
-**Clay – Full-Trust Enterprise Agent**
-
-https://www.youtube.com/watch?v=XXVy7oCdnh0
-
----
-
-### ⭐ Project Highlights
-
-```text
-✓ Local LLM
-✓ 14B Model Support
-✓ LM Studio
-✓ Agent Architecture
-✓ SmartCore
-✓ Planner
-✓ Executor
-✓ Tool Registry
-✓ Memory
-✓ Policy Engine
-✓ Human-in-the-Loop
-✓ Approval Workflow
-✓ Remote Approval
-✓ Web Research
-✓ PDF Generation
-✓ Excel Automation
-✓ E-Mail Automation
-✓ Telemetry
-✓ ROI Tracking
-✓ PySide6 GUI
-✓ Kali Linux
-✓ Windows Model Server
-✓ Tailscale
-✓ Modular Architecture
-✓ Security by Design
-```
-
-> **Silicon Velten – Clay**
->
-> **Local intelligence. Controlled execution. Human oversight.**
+Silicon Velten
+🌐 www.silicon-velten.de
+✉️ info@silicon-velten.de
